@@ -1,0 +1,68 @@
+name: TG Notification
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'addressesapi.txt'
+  workflow_dispatch:  # Manually trigger
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Load current GitHub repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Get Beijing Time
+      id: time
+      run: |
+        TIME_ZONE="Asia/Shanghai"
+        CURRENT_TIME=$(TZ=${TIME_ZONE} date +"%Y-%m-%d %H:%M:%S")
+        echo "::set-output name=current_time::${CURRENT_TIME}"
+
+    - name: Execute Notification
+      run: |
+        head -n 6 addressesapi.txt > addressesapi_truncated.txt
+        while IFS= read -r line; do
+          ips+="$(echo "$line" | sed 's/#/, /g')"$'\n'
+        done < addressesapi_truncated.txt
+        message="Today's Preferred IPs For: ${{ steps.time.outputs.current_time }}
+
+        ${ips}......More preferred IPs can be obtained through custom subscription methods
+        ————
+        VLESS Quick Experience Subscription Link: https://sub.xxxx.com/auto
+        VLESS Custom Subscription Detailed Usage:
+        https://sub.xxxx.com/sub?host=[YourVlessDomain]%26uuid=[YourUUID]%26path=[YourWsPath]
+
+        Quick Subscription Method, if your VLESS is deployed through a worker, fill in the following parameters to get node subscription information:
+        https://sub.xxxx.com/sub?host=[YourWorkerDomain]%26uuid=[YourUUID]
+        Remove the [ ] symbols in actual use, and custom domains are preferred for Worker deployment!
+        ————
+        VMESS Quick Experience Subscription Link: https://vmess.xxxx.com/auto
+        VMESS Custom Subscription Detailed Usage:
+        https://vmess.xxxx.com/sub?cc=[VmessServiceName]%26host=[YourVmessDomain]%26uuid=[YourUUID]%26path=[YourWsPath]%26alterid=[ExtraID]%26security=[EncryptionMethod]
+
+        *cc Optional, may affect online subscription conversion, recommended to use region codes, such as HK, SG, US
+        *alterid Optional, default is 0
+        *security Optional, default is auto
+
+        Quick Subscription Method:
+        https://vmess.xxxx.com/sub?host=[YourVmessDomain]%26uuid=[YourUUID]%26path=[YourWsPath]
+        
+        Remove the [ ] symbols in actual use, note that Worker does not support VMESS! Worker does not support VMESS! Worker does not support VMESS!!!
+        ————
+        Note: You can share this link anywhere"
+        
+        # wget -qO- "https://api.telegram.org/bot${{ secrets.TG_BOT_TOKEN }}/sendMessage?chat_id=${{ secrets.TG_TESTPD_ID }}&text=$message"
+        curl -X POST -H "Content-Type: application/x-www-form-urlencoded" \
+        -d "chat_id=${{ secrets.TG_PD_ID }}" \
+        -d "text=${message}" \
+        "https://api.telegram.org/bot${{ secrets.TG_BOT_TOKEN }}/sendMessage"
