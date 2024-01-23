@@ -57,4 +57,4 @@ dmxlc3M6Ly95b3VyLWhvc3Q9eXlvdXIuaG9zdDpkb2N0OjQ0My9lZG=...
 ```
 
 ## Acknowledgments
-![Alt Text](https://dartnode.com/assets/dash/images/brand/favicon.png)
+[![Alt Text](https://dartnode.com/assets/dash/images/brand/favicon.png)](https://dartnode.com/)
