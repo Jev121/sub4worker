@@ -56,5 +56,14 @@ The response will be a Base64-encoded VLESS subscription link:
 dmxlc3M6Ly95b3VyLWhvc3Q9eXlvdXIuaG9zdDpkb2N0OjQ0My9lZG=...
 ```
 
-## Acknowledgments
-[![Alt Text](https://dartnode.com/assets/dash/images/brand/favicon.png)](https://dartnode.com/)
+## License
+
+Distributed under the MIT license.
+
+## Sponsor
+We are proudly sponsored by DartNode.  DartNode supports our project by providing [mention the specific support they offer, such as infrastructure, services, etc.].
+websize:https://dartnode.com
+
+[![DartNode Logo](https://app.dartnode.com/assets/dash/images/brand/favicon.png)](https://dartnode.com)
+
+Please consider supporting DartNode as they are not only supporting us but also contributing to the open-source community.
